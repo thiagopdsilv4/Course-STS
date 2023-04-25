@@ -8,17 +8,18 @@ import java.util.Set;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
-
 
 @Entity
 @Table(name = "TB_PRODUCT")
-public class Product implements Serializable{
-	
-	private static final long serialVersionUID = 1L;	
-	//dentro do produto temos um conjunto de categorias(Set  category)
-	
+public class Product implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+	// dentro do produto temos um conjunto de categorias(Set category)
+
 	@jakarta.persistence.Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
@@ -26,14 +27,23 @@ public class Product implements Serializable{
 	private String description;
 	private Double price;
 	private String imgUrl;
-	
-	@Transient
-	private Set<Category> categories = new HashSet<>();//para garantir que a coleção não comece valendo null || Set é uma interface
-	
-	public Product() {		
+
+	@ManyToMany
+	@JoinTable(name = "tb_product_category", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "category_id")) // @JoinColumn
+																																						// -
+																																						// product_id
+																																						// é
+																																						// a
+																																						// chave
+																																						// estrangeira
+	private Set<Category> categories = new HashSet<>();// para garantir que a coleção não comece valendo null || Set é
+														// uma interface
+
+	public Product() {
 	}
 
-	public Product(Integer id, String name, String description, Double price, String imgUrl) {//NÃO USAR COLEÇÃO EM CONSTRUTOR
+	public Product(Integer id, String name, String description, Double price, String imgUrl) {// NÃO USAR COLEÇÃO EM
+																								// CONSTRUTOR
 		super();
 		this.id = id;
 		this.name = name;
@@ -92,7 +102,7 @@ public class Product implements Serializable{
 	}
 
 	@Override
-	public boolean equals(Object obj) { //comparar um produto com o outro
+	public boolean equals(Object obj) { // comparar um produto com o outro
 		if (this == obj)
 			return true;
 		if (obj == null)
@@ -102,7 +112,5 @@ public class Product implements Serializable{
 		Product other = (Product) obj;
 		return Objects.equals(id, other.id);
 	}
-	
-	
-	
+
 }
