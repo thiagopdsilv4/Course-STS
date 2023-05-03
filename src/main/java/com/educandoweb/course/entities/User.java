@@ -7,6 +7,7 @@ import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -27,9 +28,9 @@ public class User implements Serializable{
 	private String email;
 	private String password;
 	
-	@JsonIgnore
-	@OneToMany(mappedBy = "client")
-	private List<Order> orders = new ArrayList<>();
+	//@JsonIgnore
+	//@OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+	//private List<Order> orders = new ArrayList<>();
 	
 	public User() {
 		
@@ -84,9 +85,9 @@ public class User implements Serializable{
 		this.password = password;
 	}
 	
-	public List<Order> getOrders() {
-		return orders;
-	}
+	//public List<Order> getOrders() {
+	//	return orders;
+	//}
 
 	@Override
 	public int hashCode() {
